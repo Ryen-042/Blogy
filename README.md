@@ -10,7 +10,7 @@ To get started with this template:
 1. Download source files or clone the repository:
 
 ```bash
-git clone https://github.com/Ryen-042/Flask-Blog.git
+git clone https://github.com/Ryen-042/Blogy.git
 ```
 
 2. Install the dependencies with `pip install -r requirements.txt` or `make install-reqs`:
