@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock title %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-purple fixed-top shadow">
+      <div class="container">
+        <a class="navbar-brand d-md-none" href="/">Bloggy</a>
+        <a class="navbar-brand d-none d-md-block br-right" href="/">Bloggy</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
+            <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+          </div>
+          
+          <div class="navbar-nav ms-auto">
+            
+            {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{ url_for('posts.create_post') }}">New Post</a>
+              
+              <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account </a>
+                <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                  <a class="dropdown-item" href="{{ url_for('users.profile') }}">Profile</a>
+                  <a class="dropdown-item" href="{{ url_for('posts.user_posts', username=current_user.username) }}">User Posts</a>
+                  <a class="dropdown-item" href="{{ url_for('users.logout') }}">Logout</a>
+                </div>
+              </div>
+            {% else %}
+              <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+              <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-{% if show_sidebar %}8{% else %}12{% endif %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock content %}
+      </div>
+      
+      {% if show_sidebar %}
+        <div class="col-md-4 d-none d-md-block">
+          <div class="content-section pb-3 shadow">
+            <h3 class="pb-1 mb-1 border-bottom-purple">Sidebar</h3>
+            
+            <p class='text-muted'>You can put any information here you'd like.</p>
+            
+            <ul class="list-group shadow">
+              <li class="list-group-item list-group-item-bg-purple">Latest Posts</li>
+              <li class="list-group-item list-group-item-bg-purple">Announcements</li>
+              <li class="list-group-item list-group-item-bg-purple">Calendars</li>
+              <li class="list-group-item list-group-item-bg-purple">etc</li>
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

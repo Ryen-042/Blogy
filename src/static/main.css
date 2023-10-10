@@ -1,0 +1,118 @@
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #d1c4f5;
+  padding: 10px 20px;
+  border: 1px solid #c3a2ca;
+  border-radius: 3px;
+  margin-bottom: 15px;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+/* ==================== */
+.bg-purple {
+    background-color: #7662a0;
+}
+
+.br-right {
+  border-right: 2px solid #908694;
+  padding-right: 10px;
+  margin-right: 10px;
+}
+
+.list-group-item-bg-purple {
+  background-color: #e9ddff;
+  color: #444444;
+}
+
+.border-bottom-purple {
+  border-bottom: 1px solid #c29bdf
+}
+
+.border-top-purple {
+  border-top: 1px solid #c29bdf
+}
+
+.post-content-restrict-length {
+  white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+
+
+.select-button {
+  position: relative;
+  display: inline-block;
+}
+
+.options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.options a {
+  display: block;
+  padding: 6px 12px;
+  text-decoration: none;
+  color: #333;
+}
+
+.options a:hover {
+  background-color: #f5f5f5;
+}

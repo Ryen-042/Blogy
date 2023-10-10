@@ -1,0 +1,2 @@
+global-include *.html *.js *.css *.png *.gif *.jpg *.jpeg
+global-exclude __pycache__

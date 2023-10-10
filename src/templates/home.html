@@ -1,0 +1,69 @@
+{% extends "layouts/base.html" %}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+  {% for post in posts.items %}
+    <article class="content-section pb-0 shadow">
+      <div class="media border-bottom-purple pb-2 mb-2">
+        <div class="row align-items-center">
+          <div class="col-auto pe-0">
+            <a href="{{ url_for('posts.get_post', post_id=post.id) }}">
+              <img class="" style="width: 40px; height: 40px;" alt="User Image" src="{{ url_for('static', filename='profile_photos/' + post.author.photo) }}">
+            </a>
+          </div>
+          
+          <div class="col media-body d-grid">
+            <div class="small d-flex justify-content-between">
+              <a class="text-black text-decoration-none" href="{{ url_for('posts.user_posts', username=post.author.username, page=page_num, per_page=posts.per_page) }}">{{ post.author.username }}</a>
+              
+              <span class="text-muted">{{ post.date_posted.strftime("%I:%M:%S %p | %d/%m/%Y") }}</span>
+            </div>
+            
+            <div class="overflow-hidden text-nowrap mt-1" style="border-top: 1px solid #adabb1; text-overflow: ellipsis;">
+              <a class="text-decoration-none" href="{{ url_for('posts.get_post', post_id=post.id) }}">
+                {{ post.title }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="article-content text-muted ps-2 post-content-restrict-length">{{ post.content }}</p>
+    </article>
+  {% endfor %}
+  
+  
+  {% if posts.total %}
+    <div class="d-flex mx-2 justify-content-center align-items-center">
+      <a class="btn btn-sm {% if posts.has_prev %} btn-outline-primary {% else %} btn-outline-secondary disabled {% endif %} mb-4 me-1" href="{{ url_for('main.home', page=posts.prev_num, per_page=posts.per_page) }}">&lt;</a>
+      
+      {# Precompute the pages displayed by iter_pages #}
+      {% set displayed_pages = [] %}
+      
+      {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+          {% set _ = displayed_pages.append(page_num) %}
+          <a class="btn btn-sm {% if posts.page != page_num %} btn-outline-primary {% else %} btn-outline-secondary disabled {% endif %} mb-4 me-1" href="{{ url_for('main.home', page=page_num, per_page=posts.per_page) }}">{{ page_num }}</a>
+        {% else %}
+          <div class="btn btn-sm text-muted px-0 me-1 mb-4">...</div>
+        {% endif %}
+      {% endfor %}
+      
+      <a class="btn btn-sm {% if posts.has_next %}btn-outline-primary{% else %} btn-outline-secondary disabled {% endif %} mb-4 me-3" href="{{ url_for('main.home', page=posts.next_num, per_page=posts.per_page) }}">&gt;</a>
+      
+      <div class="text-muted px-0 me-1 mb-4">
+        <form action="{{ url_for('main.home') }}" method="GET">
+          <div class="input-group input-group-sm">
+            <input type="number" class="form-control" name="page" placeholder="Page" min="1" max="{{ posts.pages }}">
+            <button type="submit" class="btn btn-primary btn-sm">Go</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+  {% else %}
+    <div class="alert alert-primary text-center" role="alert">
+      <h4 class="alert-heading">No Posts Yet!</h4>
+      <p class="mb-0">Be the first to post something!</p>
+    </div>
+  {% endif %}->
+{% endblock content %}

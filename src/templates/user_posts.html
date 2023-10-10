@@ -1,0 +1,56 @@
+{% extends "layouts/base.html" %}
+{% block title %}Posts By {{ user.username }}{% endblock title %}
+
+{% block content %}
+  <div class="h1 text-center mb-4">Posts By {{ user.username }} ({{ posts.total }})</div>
+  
+  {% for post in posts.items %}
+    <article class="content-section pb-0 shadow">
+      <div class="media border-bottom-purple pb-2 mb-2">
+        <div class="row align-items-center">
+          <div class="col-auto pe-0">
+            <a href="{{ url_for('posts.get_post', post_id=post.id) }}">
+              <img class="" style="width: 40px; height: 40px;" alt="User Image" src="{{ url_for('static', filename='profile_photos/' + post.author.photo) }}">
+            </a>
+          </div>
+          
+          <div class="col media-body d-grid">
+            <div class="small d-flex justify-content-between">
+              <span class="text-muted text-decoration-none">{{ user.username }}</span>
+              <span class="text-muted">{{ post.date_posted.strftime("%I:%M:%S %p | %d/%m/%Y") }}</span>
+            </div>
+            
+            <div class="overflow-hidden text-nowrap mt-1" style="border-top: 1px solid #adabb1; text-overflow: ellipsis;">
+              <a class="text-decoration-none" href="{{ url_for('posts.get_post', post_id=post.id) }}">
+                {{ post.title }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="article-content text-muted ps-2 post-content-restrict-length">{{ post.content }}</p>
+    </article>
+  {% endfor %}
+  
+  
+  {% if posts.total %}
+    <div class="row d-inline-flex mx-2 justify-content-center align-items-center">
+      <a class="col btn btn-sm btn-outline-primary {% if not posts.has_prev %}disabled{% endif %} mb-4 me-1" href="{{ url_for('posts.user_posts', username=user.username, page=posts.prev_num, per_page=posts.per_page) }}">Previous</a>
+      
+      {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+          <a class="col btn btn-sm btn-outline-primary {% if posts.page == page_num %}disabled{% endif %} mb-4 me-1" href="{{ url_for('posts.user_posts', username=user.username, page=page_num, per_page=posts.per_page) }}">{{ page_num }}</a>
+        {% else %}
+            <div class="col-auto text-muted px-0 me-1 mb-4">...</div>
+        {% endif %}
+      {% endfor %}
+      
+      <a class="col btn btn-sm btn-outline-primary {% if not posts.has_next %}disabled{% endif %} mb-4 me-1" href="{{ url_for('posts.user_posts', username=user.username, page=posts.next_num, per_page=posts.per_page) }}">Next</a>
+    </div>
+    {% else %}
+      <div class="alert alert-primary text-center" role="alert">
+        <h4 class="alert-heading">No Posts Yet!</h4>
+        <p class="mb-0">Post your first blog <a href="{{ url_for('posts.create_post') }}">now</a>!</p>
+      </div>
+    {% endif %}
+{% endblock content %}

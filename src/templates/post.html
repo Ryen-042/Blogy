@@ -1,0 +1,63 @@
+{% extends "layouts/base.html" %}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+  <article class="content-section pb-0 shadow">
+    <div class="media border-bottom-purple pb-2 mb-2">
+      <div class="row align-items-center">
+        <div class="col-auto pe-0">
+            <a href="{{ url_for('posts.get_post', post_id=post.id) }}">
+              <img class="" style="width: 40px; height: 40px;" alt="User Image" src="{{ url_for('static', filename='profile_photos/' + post.author.photo) }}">
+            </a>
+        </div>
+        
+        <div class="col media-body d-grid">
+          <div class="row small d-flex justify-content-between">
+            <div class="col-auto">
+              <a class="text-muted text-decoration-none" href="{{ url_for('posts.user_posts', username=post.author.username, page=page_num, per_page=per_page) }}">{{ post.author.username }}</a>
+              
+              {% if current_user.id == post.author.id %}
+                <div class="dropdown d-inline-block">
+                  <button class="btn btn-sm p-0 m-0 btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  </button>
+                  
+                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+                    <a class="dropdown-item link-danger" data-bs-toggle="modal" data-bs-target="#deletPost" href="{{ url_for('posts.user_posts', username=post.author.username, page=page_num, per_page=per_page) }}">Delete</a>
+                    <a class="dropdown-item" href="#">Hide Post</a>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+            
+            <span class="col-auto text-muted">{{ post.date_posted.strftime("%I:%M:%S %p | %d/%m/%Y") }}</span>
+          </div>
+          
+          <div class="mt-1" style="border-top: 1px solid #adabb1;">{{ post.title }}</div>
+        </div>
+      </div>
+    </div>
+    <p class="article-content ps-2">{{ post.content }}</p>
+  </article>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="deletPost" tabindex="-1" aria-labelledby="deletPostLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deletPostLabel">Delete This Post</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this post?
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+          <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Confirm">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
